@@ -1,16 +1,26 @@
-# This is a sample Python script.
+def read_file(file_path):
+    with open(file_path, "r") as file:
+        lines = file.readlines()
+    return [line.strip() for line in lines if line.strip()]
 
-# Press Umschalt+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+def sort_tcodes(lines):
+    tcodes = []
+    for line in lines:
+        parts = line.split("\t\t")
+        if len(parts) == 2:
+            tcodes.append((parts[0], parts[1]))
+    return sorted(tcodes, key=lambda x: x[0])
 
+def write_file(sorted_tcodes, output_path):
+    with open(output_path, "w") as file:
+        for tcode, description in sorted_tcodes:
+            file.write(f"{tcode}\t\t{description}\n")
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Strg+F8 to toggle the breakpoint.
+if __name__ == "__main__":
+    input_file = "example.txt"
+    output_file = "sorted_example.txt"
 
-
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    lines = read_file(input_file)
+    sorted_tcodes = sort_tcodes(lines)
+    write_file(sorted_tcodes, output_file)
+    print(f"Die sortierten Transaktionen wurden in '{output_file}' gespeichert.")
